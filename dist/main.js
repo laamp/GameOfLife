@@ -136,10 +136,11 @@ eval("var content = __webpack_require__(/*! !../../node_modules/css-loader/dist/
 /*!************************!*\
   !*** ./src/js/game.js ***!
   \************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
-eval("class Game {\n    constructor() {\n        console.log(\"Game constructor has run\");\n    }\n}\n\nmodule.exports = Game;\n\n\n//# sourceURL=webpack:///./src/js/game.js?");
+"use strict";
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./util */ \"./src/js/util.js\");\n\n\nclass Game {\n    constructor(canvas) {\n        // setup canvas\n        this.canvas = canvas;\n        this.canvas.width = _util__WEBPACK_IMPORTED_MODULE_0__[\"globals\"].screenWidth;\n        this.canvas.height = _util__WEBPACK_IMPORTED_MODULE_0__[\"globals\"].screenHeight;\n        this.ctx = canvas.getContext(\"2d\");\n\n        // setup animation\n        this.fps = 2;\n        this.fpsInterval = 1000 / this.fps;\n        this.then = Date.now();\n        this.animate = this.animate.bind(this);\n        this.animate();\n    }\n\n    animate() {\n        requestAnimationFrame(this.animate);\n\n        // how much time passed since this was last called?\n        let now = Date.now();\n        const timeElapsed = now - this.then;\n\n        // update if enough time passed\n        if (timeElapsed > this.fpsInterval) {\n            this.then = now - (timeElapsed % this.fpsInterval);\n\n            this.render();\n        }\n    }\n\n    render() {\n        // clear canvas before drawing\n        this.ctx.clearRect(0, 0, 800, 600);\n\n        // do the drawing\n        this.ctx.fillStyle = Object(_util__WEBPACK_IMPORTED_MODULE_0__[\"randomColor\"])();\n        this.ctx.fillRect(\n            Math.random() * this.canvas.width,\n            Math.random() * this.canvas.height,\n            100, 100\n        );\n    }\n}\n\n/* harmony default export */ __webpack_exports__[\"default\"] = (Game);\n\n\n//# sourceURL=webpack:///./src/js/game.js?");
 
 /***/ }),
 
@@ -151,7 +152,19 @@ eval("class Game {\n    constructor() {\n        console.log(\"Game constructor 
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _game__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./game */ \"./src/js/game.js\");\n/* harmony import */ var _game__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_game__WEBPACK_IMPORTED_MODULE_0__);\n/* harmony import */ var _css_index__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../css/index */ \"./src/css/index.css\");\n/* harmony import */ var _css_index__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_css_index__WEBPACK_IMPORTED_MODULE_1__);\n\n\n\n\nwindow.addEventListener(\"DOMContentLoaded\", () => {\n  const canvas = document.querySelector(\"canvas\");\n  const game = new _game__WEBPACK_IMPORTED_MODULE_0___default.a();\n});\n\n\n//# sourceURL=webpack:///./src/js/index.js?");
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _game__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./game */ \"./src/js/game.js\");\n/* harmony import */ var _css_index__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../css/index */ \"./src/css/index.css\");\n/* harmony import */ var _css_index__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_css_index__WEBPACK_IMPORTED_MODULE_1__);\n\n\n\n\nwindow.addEventListener(\"DOMContentLoaded\", () => {\n  const canvas = document.querySelector(\"canvas\");\n  const game = new _game__WEBPACK_IMPORTED_MODULE_0__[\"default\"](canvas);\n});\n\n\n//# sourceURL=webpack:///./src/js/index.js?");
+
+/***/ }),
+
+/***/ "./src/js/util.js":
+/*!************************!*\
+  !*** ./src/js/util.js ***!
+  \************************/
+/*! exports provided: globals, randomColor */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"globals\", function() { return globals; });\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"randomColor\", function() { return randomColor; });\nconst globals = {\n    screenWidth: 800,\n    screenHeight: 600\n};\n\nconst randomColor = () => {\n    const vals = [\n        \"0\", \"1\", \"2\", \"3\",\n        \"4\", \"5\", \"6\", \"7\",\n        \"8\", \"9\", \"A\", \"B\",\n        \"C\", \"D\", \"E\", \"F\"\n    ];\n\n    const randR =\n        vals[Math.floor(Math.random() * vals.length)] +\n        vals[Math.floor(Math.random() * vals.length)];\n    const randG =\n        vals[Math.floor(Math.random() * vals.length)] +\n        vals[Math.floor(Math.random() * vals.length)];\n    const randB =\n        vals[Math.floor(Math.random() * vals.length)] +\n        vals[Math.floor(Math.random() * vals.length)];\n\n    return (\"#\" + randR + randG + randB);\n};\n\n\n//# sourceURL=webpack:///./src/js/util.js?");
 
 /***/ })
 
