@@ -2,15 +2,34 @@ import { globals, randomColor } from "./util";
 
 class Game {
   constructor(canvas) {
+    this.gameStates = ["PAUSED", "PLAYING", "RESET"];
+    this.state = this.gameStates[0];
+
+    // interface setup
+    // play/pause button
+    // reset button
+    // x dimension slider
+    // y dimension slider
+    // speed slider
+    // color picker
+    this.playButton = document.querySelector("#play");
+    this.playButton.addEventListener("click", () => {
+      if (this.state === "PLAYING") {
+        this.state = this.gameStates[0];
+        this.playButton.innerHTML = "Paused";
+      } else if (this.state === "PAUSED") {
+        this.state = this.gameStates[1];
+        this.playButton.innerHTML = "Playing";
+      }
+    });
+
     // setup game variables
-    this.gridXSize = 4;
+    this.gridXSize = 16;
     this.squareWidth = globals.screenWidth / this.gridXSize;
-    this.gridYSize = 3;
+    this.gridYSize = 12;
     this.squareHeight = globals.screenHeight / this.gridYSize;
     this.grid = [];
     this.setupGrid();
-
-    window.grid = this.grid;
 
     // setup canvas
     this.canvas = canvas;
@@ -23,7 +42,7 @@ class Game {
     this.canvas.addEventListener("click", this.clickGrid);
 
     // setup animation
-    this.fps = 1;
+    this.fps = 10;
     this.fpsInterval = 1000 / this.fps;
     this.then = Date.now();
     this.animate = this.animate.bind(this);
@@ -31,8 +50,6 @@ class Game {
   }
 
   animate() {
-    requestAnimationFrame(this.animate);
-
     // how much time passed since this was last called?
     let now = Date.now();
     const timeElapsed = now - this.then;
@@ -40,9 +57,13 @@ class Game {
     // update if enough time passed
     if (timeElapsed > this.fpsInterval) {
       this.then = now - (timeElapsed % this.fpsInterval);
-      this.calculateNextGrid();
+      if (this.state === "PLAYING") {
+        this.calculateNextGrid();
+      }
       this.render();
     }
+
+    requestAnimationFrame(this.animate);
   }
 
   render() {
@@ -56,49 +77,36 @@ class Game {
   setupGrid() {
     // populate the 2d array that represent the grid
     for (let cols = 0; cols < this.gridXSize; cols++) {
-      let bool = false;
-
-      // alternate for each column
-      // if (cols % 2 === 0) {
-      //   bool = true;
-      // }
-
       let newCol = [];
       for (let rows = 0; rows < this.gridYSize; rows++) {
-        // select every other square
-        // bool = !bool;
-
-        // randomly activate a square
-        if (Math.random() > 0.5) {
-          bool = false;
-        } else {
-          bool = true;
-        }
-
-        newCol.push(bool);
+        // manually pushing in values here
+        newCol.push(true);
       }
       this.grid.push(newCol);
     }
   }
 
   drawGrid() {
-    this.grid.forEach((col, i) => {
-      col.forEach((square, j) => {
-        if (square) {
-          this.ctx.fillStyle = "green";
-          // this.ctx.fillStyle = randomColor();
+    for (let x = 0; x < this.gridXSize; x++) {
+      for (let y = 0; y < this.gridYSize; y++) {
+        if (this.grid[x][y]) {
+          this.ctx.fillStyle = "indigo";
           this.ctx.fillRect(
-            i * this.squareWidth,
-            j * this.squareHeight,
+            x * this.squareWidth,
+            y * this.squareHeight,
             this.squareWidth,
             this.squareHeight
           );
         }
-      });
-    });
+      }
+    }
   }
 
   clickGrid(e) {
+    // make sure the game is paused
+    this.state = this.gameStates[0];
+    this.playButton.innerHTML = "Paused";
+
     const xPos = Math.floor((e.offsetX / globals.screenWidth) * this.gridXSize);
     const yPos = Math.floor(
       (e.offsetY / globals.screenHeight) * this.gridYSize
@@ -109,35 +117,60 @@ class Game {
   }
 
   calculateNextGrid() {
-    let nextGrid = [];
+    let newGrid = [];
 
-    this.grid.forEach((col, i) => {
+    // make a blank grid
+    for (let i = 0; i < this.gridXSize; i++) {
       let newCol = [];
-      col.forEach((square, j) => {
-        // invert each square
-        newCol.push(this.grid[i][j]);
-        // console.log(i, j);
-        this.countNeighbors(i, j);
-      });
-      nextGrid.push(newCol);
-    });
+      for (let j = 0; j < this.gridYSize; j++) {
+        newCol.push("x");
+      }
+      newGrid.push(newCol);
+    }
 
-    this.grid = nextGrid;
+    for (let x = 0; x < this.gridXSize; x++) {
+      for (let y = 0; y < this.gridYSize; y++) {
+        let neighbors = this.countNeighbors(x, y);
+
+        // rules for life here
+        if (this.grid[x][y]) {
+          if (neighbors < 2) {
+            newGrid[x][y] = false; // die from underpopulation
+          } else if (neighbors > 3) {
+            newGrid[x][y] = false; // die from overpopulation
+          } else {
+            newGrid[x][y] = true; // lives to next round
+          }
+        } else {
+          if (neighbors === 3) {
+            newGrid[x][y] = true; // new life
+          } else {
+            newGrid[x][y] = false; // stays dead
+          }
+        }
+      }
+    }
+
+    this.grid = newGrid;
   }
 
   countNeighbors(col, row) {
     let neighbors = 0;
-    // console.log(this.grid[col - 1][row]);
 
-    // this.grid[col][row]
-    // if (this.grid[col - 1][row + 1]) neighbors++;
-    // if (this.grid[col][row + 1]) neighbors++;
-    // if (this.grid[col + 1][row + 1]) neighbors++;
-    // if (this.grid[col - 1][row]) neighbors++;
-    // if (this.grid[col + 1][row]) neighbors++;
-    // if (this.grid[col - 1][row - 1]) neighbors++;
-    // if (this.grid[col][row - 1]) neighbors++;
-    // if (this.grid[col + 1][row - 1]) neighbors++;
+    if (this.grid[col - 1]) {
+      if (this.grid[col - 1][row]) neighbors++;
+      if (this.grid[col - 1][row - 1]) neighbors++;
+      if (this.grid[col - 1][row + 1]) neighbors++;
+    }
+
+    if (this.grid[col + 1]) {
+      if (this.grid[col + 1][row]) neighbors++;
+      if (this.grid[col + 1][row - 1]) neighbors++;
+      if (this.grid[col + 1][row + 1]) neighbors++;
+    }
+
+    if (this.grid[col][row - 1]) neighbors++;
+    if (this.grid[col][row + 1]) neighbors++;
 
     return neighbors;
   }
