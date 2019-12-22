@@ -1,70 +1,110 @@
 body {
-    margin: 0;
-    background-color: #222222;
-    font-family: "Ubuntu", sans-serif;
-    color: #7e57c2;
+  margin: 0;
+  background-color: #222222;
+  font-family: "Ubuntu", sans-serif;
+  color: #7e57c2;
 }
 
 footer {
-    width: 1100px;
-    margin: 10px auto 0 auto;
+  width: 1100px;
+  margin: 10px auto 0 auto;
 }
 
 canvas {
-    width: 800px;
-    height: 600px;
-    box-shadow: 0 0 10px 0 #8a51d4a9;
-    border-radius: 2px;
+  width: 800px;
+  height: 600px;
+  box-shadow: 0 0 10px 0 #8a51d4a9;
+  border-radius: 2px;
 }
 
 h1 {
-    margin: 0;
-    padding: 8px 0 12px 0;
-    text-align: center;
-    min-width: 1100px;
+  margin: 0;
+  padding: 8px 0 12px 0;
+  text-align: center;
+  min-width: 1100px;
 }
 
 p {
-    margin: 0;
+  margin: 0;
 }
 
 footer p {
-    margin-bottom: 5px;
+  margin-bottom: 5px;
 }
 
 footer a {
-    color: #7e57c2;
+  color: #7e57c2;
 }
 
 footer a:hover {
-    color: #1565c0;
+  color: #1565c0;
+}
+
+button {
+  border: none;
+  font-family: "Ubuntu", sans-serif;
+  font-size: 1em;
+  padding: 8px 0;
+  color: #bc96ff;
+  background-color: #484848;
+  box-shadow: 0 0 10px 0 #00000033;
+  outline: none;
+}
+
+button:active {
+  box-shadow: none;
+  transform: translateY(2px);
+  background-color: #3f3f3f;
 }
 
 #content {
-    width: 1100px;
-    margin: 0 auto;
-    display: flex;
+  width: 1100px;
+  margin: 0 auto;
+  display: flex;
 }
 
 #controls {
-    display: flex;
-    flex-direction: column;
-    margin: 0 0 0 10px;
-    padding: 12px;
-    width: 100%;
-    border-radius: 2px;
-    background-color: #2f2f2f;
-    box-shadow: 0 0 10px 0 #00000033;
+  display: flex;
+  flex-direction: column;
+  margin: 0 0 0 10px;
+  padding: 12px;
+  width: 100%;
+  border-radius: 2px;
+  background-color: #2f2f2f;
+  box-shadow: 0 0 10px 0 #00000033;
 }
 
-#controls>* {
-    margin: 0 0 12px 0;
+#controls > * {
+  margin: 0 0 12px 0;
 }
 
 #footer-content {
-    width: max-content;
-    padding: 12px;
-    border-radius: 2px;
-    background-color: #2f2f2f;
-    box-shadow: 0 0 10px 0 #00000033;
+  width: max-content;
+  padding: 12px;
+  border-radius: 2px;
+  background-color: #2f2f2f;
+  box-shadow: 0 0 10px 0 #00000033;
+}
+
+.block {
+  background-color: #7e57c2;
+}
+
+#glider-example {
+  width: 60px;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+#spaceship-example {
+  width: 100px;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+#glider-example div,
+#spaceship-example div {
+  width: 18px;
+  height: 18px;
+  margin: 1px;
 }

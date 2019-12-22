@@ -5,10 +5,23 @@ class Game {
     this.gameStates = ["PAUSED", "PLAYING", "RESET"];
     this.state = this.gameStates[0];
 
+    // setup game variables
+    this.gridXSize = 32;
+    this.squareWidth = globals.screenWidth / this.gridXSize;
+    this.gridYSize = 24;
+    this.squareHeight = globals.screenHeight / this.gridYSize;
+    this.grid = [];
+    this.setupGrid();
+    this.fps = 10;
+    this.color = "#8a51d4";
+
+    // setup canvas
+    this.canvas = canvas;
+    this.canvas.width = globals.screenWidth;
+    this.canvas.height = globals.screenHeight;
+    this.ctx = canvas.getContext("2d");
+
     // interface setup
-    // y dimension slider
-    // speed slider
-    // color picker
 
     // play/pause button
     this.playButton = document.querySelector("#play");
@@ -32,27 +45,50 @@ class Game {
     });
 
     // x dimension slider
+    this.xSlider = document.querySelector("#x-amount");
+    this.xSlider.value = this.gridXSize;
+    this.xSlider.addEventListener("change", () => {
+      this.gridXSize = this.xSlider.value;
+      this.squareWidth = globals.screenWidth / this.gridXSize;
+      this.state = this.gameStates[0];
+      this.playButton.innerHTML = "Paused";
+      this.setupGrid();
+      this.render();
+    });
 
-    // setup game variables
-    this.gridXSize = 80;
-    this.squareWidth = globals.screenWidth / this.gridXSize;
-    this.gridYSize = 60;
-    this.squareHeight = globals.screenHeight / this.gridYSize;
-    this.grid = [];
-    this.setupGrid();
+    // y dimension slider
+    this.ySlider = document.querySelector("#y-amount");
+    this.ySlider.value = this.gridYSize;
+    this.ySlider.addEventListener("change", () => {
+      this.gridYSize = this.ySlider.value;
+      this.squareHeight = globals.screenHeight / this.gridYSize;
+      this.state = this.gameStates[0];
+      this.playButton.innerHTML = "Paused";
+      this.setupGrid();
+      this.render();
+    });
 
-    // setup canvas
-    this.canvas = canvas;
-    this.canvas.width = globals.screenWidth;
-    this.canvas.height = globals.screenHeight;
-    this.ctx = canvas.getContext("2d");
+    // speed slider
+    this.speedSlider = document.querySelector("#speed");
+    this.speedSlider.value = this.fps;
+    this.speedSlider.addEventListener("change", () => {
+      this.fps = this.speedSlider.value;
+      this.fpsInterval = 1000 / this.fps;
+      this.then = Date.now();
+    });
+
+    // color picker
+    this.colorSlider = document.querySelector("#color-picker");
+    this.colorSlider.value = this.color;
+    this.colorSlider.addEventListener("change", () => {
+      this.color = this.colorSlider.value;
+    });
 
     // interaction with grid
     this.clickGrid = this.clickGrid.bind(this);
     this.canvas.addEventListener("click", this.clickGrid);
 
     // setup animation
-    this.fps = 10;
     this.fpsInterval = 1000 / this.fps;
     this.then = Date.now();
     this.animate = this.animate.bind(this);
@@ -91,8 +127,8 @@ class Game {
     for (let cols = 0; cols < this.gridXSize; cols++) {
       let newCol = [];
       for (let rows = 0; rows < this.gridYSize; rows++) {
-        // manually pushing in values here
-        newCol.push(true);
+        // start with random shapes
+        if (Math.random() > 0.4) newCol.push(true);
       }
       newGrid.push(newCol);
     }
@@ -104,7 +140,7 @@ class Game {
     for (let x = 0; x < this.gridXSize; x++) {
       for (let y = 0; y < this.gridYSize; y++) {
         if (this.grid[x][y]) {
-          this.ctx.fillStyle = "#8a51d4";
+          this.ctx.fillStyle = this.color;
           this.ctx.fillRect(
             x * this.squareWidth,
             y * this.squareHeight,
