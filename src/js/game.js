@@ -6,12 +6,11 @@ class Game {
     this.state = this.gameStates[0];
 
     // interface setup
-    // play/pause button
-    // reset button
-    // x dimension slider
     // y dimension slider
     // speed slider
     // color picker
+
+    // play/pause button
     this.playButton = document.querySelector("#play");
     this.playButton.addEventListener("click", () => {
       if (this.state === "PLAYING") {
@@ -23,10 +22,21 @@ class Game {
       }
     });
 
+    // reset button
+    this.resetButton = document.querySelector("#reset");
+    this.resetButton.addEventListener("click", () => {
+      this.state = this.gameStates[0];
+      this.playButton.innerHTML = "Paused";
+      this.setupGrid();
+      this.render();
+    });
+
+    // x dimension slider
+
     // setup game variables
-    this.gridXSize = 16;
+    this.gridXSize = 80;
     this.squareWidth = globals.screenWidth / this.gridXSize;
-    this.gridYSize = 12;
+    this.gridYSize = 60;
     this.squareHeight = globals.screenHeight / this.gridYSize;
     this.grid = [];
     this.setupGrid();
@@ -75,6 +85,8 @@ class Game {
   }
 
   setupGrid() {
+    let newGrid = [];
+
     // populate the 2d array that represent the grid
     for (let cols = 0; cols < this.gridXSize; cols++) {
       let newCol = [];
@@ -82,15 +94,17 @@ class Game {
         // manually pushing in values here
         newCol.push(true);
       }
-      this.grid.push(newCol);
+      newGrid.push(newCol);
     }
+
+    this.grid = newGrid;
   }
 
   drawGrid() {
     for (let x = 0; x < this.gridXSize; x++) {
       for (let y = 0; y < this.gridYSize; y++) {
         if (this.grid[x][y]) {
-          this.ctx.fillStyle = "indigo";
+          this.ctx.fillStyle = "#8a51d4";
           this.ctx.fillRect(
             x * this.squareWidth,
             y * this.squareHeight,

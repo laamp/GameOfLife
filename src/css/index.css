@@ -1,5 +1,70 @@
+body {
+    margin: 0;
+    background-color: #222222;
+    font-family: "Ubuntu", sans-serif;
+    color: #7e57c2;
+}
+
+footer {
+    width: 1100px;
+    margin: 10px auto 0 auto;
+}
+
 canvas {
-    border: 2px solid red;
     width: 800px;
     height: 600px;
+    box-shadow: 0 0 10px 0 #8a51d4a9;
+    border-radius: 2px;
+}
+
+h1 {
+    margin: 0;
+    padding: 8px 0 12px 0;
+    text-align: center;
+    min-width: 1100px;
+}
+
+p {
+    margin: 0;
+}
+
+footer p {
+    margin-bottom: 5px;
+}
+
+footer a {
+    color: #7e57c2;
+}
+
+footer a:hover {
+    color: #1565c0;
+}
+
+#content {
+    width: 1100px;
+    margin: 0 auto;
+    display: flex;
+}
+
+#controls {
+    display: flex;
+    flex-direction: column;
+    margin: 0 0 0 10px;
+    padding: 12px;
+    width: 100%;
+    border-radius: 2px;
+    background-color: #2f2f2f;
+    box-shadow: 0 0 10px 0 #00000033;
+}
+
+#controls>* {
+    margin: 0 0 12px 0;
+}
+
+#footer-content {
+    width: max-content;
+    padding: 12px;
+    border-radius: 2px;
+    background-color: #2f2f2f;
+    box-shadow: 0 0 10px 0 #00000033;
 }

@@ -1,6 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+    <link
+      href="https://fonts.googleapis.com/css?family=Ubuntu:400,700&display=swap"
+      rel="stylesheet"
+    />
+
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
@@ -15,7 +20,50 @@
   </head>
 
   <body>
-    <canvas></canvas>
-    <button id="play">Paused</button>
+    <header>
+      <h1>Conway's Game of Life</h1>
+    </header>
+    <section id="content">
+      <canvas></canvas>
+      <section id="controls">
+        <button id="play">Paused</button>
+        <button id="reset">Reset</button>
+
+        <p>Horizontal Units</p>
+        <input
+          type="range"
+          min="2"
+          max="80"
+          value="32"
+          class="slider"
+          id="x-amount"
+        />
+
+        <p>Vertical Units</p>
+        <input
+          type="range"
+          min="2"
+          max="60"
+          value="24"
+          class="slider"
+          id="y-amount"
+        />
+        <input
+          type="range"
+          min="1"
+          max="60"
+          value="3"
+          class="slider"
+          id="speed"
+        />
+        <input type="color" value="#7e57c2" />
+      </section>
+    </section>
+    <footer>
+      <div id="footer-content">
+        <p>by Lance Smith</p>
+        <a href="https://github.com/laamp/GameOfLife">GitHub</a>
+      </div>
+    </footer>
   </body>
 </html>
